@@ -15,7 +15,6 @@ export default function BottleScene() {
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    // ── Renderer ────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
@@ -27,7 +26,6 @@ export default function BottleScene() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2; 
 
-    // ── Scene & Camera ───────────────────────────────────────────
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       38,
@@ -37,7 +35,6 @@ export default function BottleScene() {
     );
     camera.position.set(0, 0.2, 6);
 
-    // ── Lights ───────────────────────────────────────────────────
     scene.add(new THREE.AmbientLight(0xffffff, 0.4)); 
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
@@ -60,7 +57,6 @@ export default function BottleScene() {
     rightLight.position.set(6, 2, 2);
     scene.add(rightLight);
 
-    // ── Load GLB ─────────────────────────────────────────────────
     let animCleanup = null;
     const loader = new GLTFLoader();
 
@@ -108,7 +104,6 @@ export default function BottleScene() {
     };
     tick();
 
-    // ── Resize ───────────────────────────────────────────────────
     const onResize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -116,7 +111,6 @@ export default function BottleScene() {
     };
     window.addEventListener("resize", onResize);
 
-    // ── Cleanup ──────────────────────────────────────────────────
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
