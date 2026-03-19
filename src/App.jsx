@@ -1,31 +1,34 @@
-import Hero from "./sections/Hero";
-import IntroduceSection from "./sections/IntroduceSection";
-import HeroBottlePortal from "./components/HeroBottlePortal";
-import { ScrollSmoother , ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollSmoother , ScrollTrigger)
-const App = () => {
+import BottleScene from "./components/BottleScene";
+import Hero from "./sections/Hero";
+import IntroduceSection from "./sections/IntroduceSection";
 
-    useGSAP(() => {
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+export default function App() {
+  useGSAP(() => {
     ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
       smooth: 2,
       effects: true,
     });
   });
+
   return (
-    <main className="bg-black min-h-screen">
-       <div id="smooth-wrapper">
+    <>
+      <BottleScene />
+
+      <div id="smooth-wrapper">
         <div id="smooth-content">
           <Hero />
           <IntroduceSection />
-          <HeroBottlePortal />
-          </div>
         </div>
-
-    </main>
+      </div>
+    </>
   );
-};
-
-export default App;
+}
