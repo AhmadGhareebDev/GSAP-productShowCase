@@ -3,6 +3,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
+import { useEffect } from "react";
 
 import { LoadingProvider, useLoading } from "./contexts/LoadingContext";
 import BottleScene from "./components/BottleScene";
@@ -23,7 +24,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 function AppContent() {
   const isDesktopOrTablet = useMediaQuery({ minWidth: 768 });
-  const { isLoading } = useLoading();
+  const { isLoading, setModelLoaded } = useLoading();
   
   useGSAP(() => {
     ScrollSmoother.create({
@@ -33,6 +34,12 @@ function AppContent() {
       effects: true,
     });
   });
+
+  useEffect(() => {
+    if (!isDesktopOrTablet) {
+      setModelLoaded();
+    }
+  }, [isDesktopOrTablet, setModelLoaded]);
 
   return (
     <>
