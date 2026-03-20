@@ -90,7 +90,7 @@ export function setupBottleAnims(bottle, camera) {
 
     const st3rot = gsap.to(bottle.rotation, {
       keyframes: [
-        { x: 0,    z: 0,    y: Math.PI * 12, ease: "power1.inOut" }
+        { x: 0, z: 0, y: Math.PI * 12, ease: "power1.inOut" }
       ],
       ease: "none",
       overwrite: "auto",
@@ -102,7 +102,7 @@ export function setupBottleAnims(bottle, camera) {
         end: "top top",
         scrub: 0.8,
         onLeave:     () => gsap.set(bottle.rotation, { x: 0, y: Math.PI * 12, z: 0 }),
-        onEnterBack: () => gsap.set(bottle.rotation, { x: 0, y: Math.PI * 8, z: 0 }),
+        onEnterBack: () => gsap.set(bottle.rotation, { x: 0, y: Math.PI * 8,  z: 0 }),
       },
     });
 
@@ -110,8 +110,8 @@ export function setupBottleAnims(bottle, camera) {
     if (bodyMat) {
       st3color = gsap.to(bodyMat.color, {
         r: 224 / 255,
-        g: 99 / 255,
-        b: 95 / 255,
+        g: 99  / 255,
+        b: 95  / 255,
         ease: "none",
         overwrite: "auto",
         immediateRender: false,
@@ -207,6 +207,89 @@ export function setupBottleAnims(bottle, camera) {
       });
     }
 
+    // Drop bottle when leaving scent-4
+    const stHide = ScrollTrigger.create({
+      id: `${LABEL}-hide`,
+      trigger: '[data-section="scent-4"]',
+      start: "bottom bottom",
+      onLeave:     () => gsap.to(bottle.position, { y: -5, duration: 0.8, ease: "power2.in"  }),
+      onEnterBack: () => gsap.to(bottle.position, { y: 0,  duration: 0.8, ease: "power2.out" }),
+    });
+
+    // Bottle Details — bring back, drop on leave
+    const stBottleDetails = ScrollTrigger.create({
+      id: `${LABEL}-bottle-details`,
+      trigger: '[data-section="bottle-details"]',
+      start: "top center",
+      end: "bottom center",
+      onEnter:     () => gsap.to(bottle.position, { y: 0,  duration: 1,   ease: "power3.out" }),
+      onLeave:     () => gsap.to(bottle.position, { y: -5, duration: 0.8, ease: "power2.in"  }),
+      onEnterBack: () => gsap.to(bottle.position, { y: 0,  duration: 1,   ease: "power3.out" }),
+    });
+
+    // Footer — tilt, spin, color cycle
+    let footerRotation = null;
+    let footerColors   = null;
+
+    const FOOTER_COLORS = [
+      { r: 106/255, g: 191/255, b: 138/255 }, // green  (summer)
+      { r: 232/255, g: 196/255, b: 162/255 }, // beige  (autumn)
+      { r: 224/255, g:  99/255, b:  95/255 }, // red    (spring)
+      { r: 153/255, g: 140/255, b: 170/255 }, // purple (winter)
+    ];
+
+    function startFooterAnim() {
+      gsap.to(bottle.position, { y: 0,     duration: 1, ease: "power3.out" });
+      gsap.to(bottle.rotation, { z: -0.18, duration: 1, ease: "power3.out" });
+
+      footerRotation = gsap.to(bottle.rotation, {
+        y: `+=${Math.PI * 2}`,
+        duration: 6,
+        ease: "none",
+        repeat: -1,
+      });
+
+      if (bodyMat) {
+        let colorIndex = 0;
+        function cycleColor() {
+          colorIndex = (colorIndex + 1) % FOOTER_COLORS.length;
+          footerColors = gsap.to(bodyMat.color, {
+            ...FOOTER_COLORS[colorIndex],
+            duration: 1.5,
+            ease: "power1.inOut",
+            onComplete: cycleColor,
+          });
+        }
+        cycleColor();
+      }
+    }
+
+    function stopFooterAnim() {
+      footerRotation?.kill();
+      footerColors?.kill();
+      footerRotation = null;
+      footerColors   = null;
+      gsap.to(bottle.position, { y: -5, duration: 0.8, ease: "power2.in"  });
+      gsap.to(bottle.rotation, { z: 0,  duration: 0.5, ease: "power2.out" });
+      if (bodyMat) bodyMat.color.setHex(0x6abf8a);
+    }
+
+    const stFooter = ScrollTrigger.create({
+      id: `${LABEL}-footer`,
+      trigger: '[data-section="footer"]',
+      start: "top center",
+      onEnter:     () => startFooterAnim(),
+      onEnterBack: () => startFooterAnim(),
+      onLeaveBack: () => stopFooterAnim(),
+    });
+
+    const stGallery = ScrollTrigger.create({
+      id: `${LABEL}-gallery`,
+      trigger: '[data-section="gallery"]', // make sure your GallerySection has data-section="gallery"
+      start: "bottom center",
+      onLeaveBack: () => gsap.to(bottle.position, { y: -5, duration: 0.8, ease: "power2.in" }),
+    });
+
     cleanupFns = [
       () => st1rot.scrollTrigger?.kill(),
       () => st2rot.scrollTrigger?.kill(),
@@ -217,6 +300,12 @@ export function setupBottleAnims(bottle, camera) {
       () => st4color?.scrollTrigger?.kill(),
       () => st5rot.scrollTrigger?.kill(),
       () => st5color?.scrollTrigger?.kill(),
+      () => stHide.kill(),
+      () => stBottleDetails.kill(),
+      () => stFooter.kill(),
+      () => footerRotation?.kill(),
+      () => footerColors?.kill(),
+      () => stGallery.kill(),
     ];
 
     ScrollTrigger.refresh();

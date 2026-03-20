@@ -2,8 +2,10 @@ import React from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
+import { useMediaQuery } from 'react-responsive'
 
 const IntroduceSection = () => {
+  const isDesktopOrTablet = useMediaQuery({ minWidth: 768 });
 
   useGSAP(() => {
 
@@ -63,16 +65,16 @@ const IntroduceSection = () => {
       className='introduce-section'
     >
 
-      <div className="flex justify-between w-full items-center z-10">
+      <div className="flex flex-col md:flex-row justify-between w-full items-center md:items-center gap-10 md:gap-0 z-10">
 
-        <div className="flex flex-col text-left">
+        <div className="flex flex-col text-center md:text-left">
           <p className="font-extrabold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[8rem] leading-[1.1] tracking-tighter drop-shadow-md text-white">
             <span className="seasons-text inline-block">Just for</span><br />
             <span className="seasons-text inline-block">You.</span>
           </p>
         </div>
 
-        <div className="flex flex-col text-right items-end justify-center">
+        <div className="flex flex-col text-center md:text-right items-center md:items-end justify-center">
           <p className="text-glow-titanium uppercase tracking-[0.3em] text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-4 md:mb-6">
             Not just one scent.
           </p>
@@ -85,7 +87,7 @@ const IntroduceSection = () => {
 
       <img src="images/left-leaf.png" alt="" className='left-leaf' />
       <img src="images/right-leaf.png" alt="" className='right-leaf' />
-      <div className='glassy-overlay'></div>
+      { isDesktopOrTablet && <div className='glassy-overlay'></div>}
     </section>
   )
 }

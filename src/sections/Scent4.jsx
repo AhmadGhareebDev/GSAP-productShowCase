@@ -37,6 +37,20 @@ const Scent4 = () => {
       duration: 2,
       stagger: 0.1,
     }, 0)
+    
+    tl.from('.left-leaf', {
+      x: -100,
+      opacity: 0,
+      duration: 2,
+      rotate: -45,
+    }, 0)
+    tl.from('.right-leaf', {
+      x: 100,
+      opacity: 0,
+      duration: 2,
+      rotate: 45,
+    }, 0)
+
 
   }, { scope: containerRef })
 
@@ -51,16 +65,16 @@ const Scent4 = () => {
     >
       <div className="absolute inset-0 bg-black/40" />
 
-      <div className="relative flex justify-between w-full items-center z-30">
+      <div className="relative flex flex-col md:flex-row justify-between w-full items-center md:items-center gap-10 md:gap-0 z-30">
         
-        <div className="flex flex-col text-left">
+        <div className="flex flex-col text-center md:text-left">
           <p className="font-extrabold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[8rem] leading-[1.1] tracking-tighter drop-shadow-md text-white">
             <span className="scent-text-anim-4 inline-block">Summer</span><br />
             <span className="scent-text-anim-4 inline-block text-transparent bg-clip-text bg-gradient-to-br from-green-300 to-teal-500">Scent.</span>
           </p>
         </div>
 
-        <div className="flex flex-col text-right items-end justify-center max-w-sm lg:max-w-md z-50">
+        <div className="flex flex-col text-center md:text-right items-center md:items-end justify-center w-full md:w-auto max-w-sm lg:max-w-md z-50">
           <p className="scent-text-anim-4 text-green-300 uppercase tracking-[0.3em] text-lg sm:text-xl font-bold mb-2">
             Summer Scent
           </p>
@@ -70,7 +84,10 @@ const Scent4 = () => {
         </div>
       </div>
 
+
       <div className='glassy-overlay-full glassy-scent-4'></div>
+      <img src="images/left-leaf.png" alt="" className='left-leaf' />
+      <img src="images/right-leaf.png" alt="" className='right-leaf' />
     </section>
   )
 }

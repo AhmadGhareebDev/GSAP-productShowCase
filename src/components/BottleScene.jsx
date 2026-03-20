@@ -97,6 +97,8 @@ export default function BottleScene() {
       (err) => console.error("GLB failed to load:", err)
     );
 
+ 
+
     let raf;
     const tick = () => {
       raf = requestAnimationFrame(tick);
