@@ -4,13 +4,14 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setupBottleAnims } from "../animations/bottleAnims";
-
+import { useLoading } from "../contexts/LoadingContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BottleScene() {
   const canvasRef = useRef(null);
   const bottleRef = useRef(null);
+  const { setModelLoaded } = useLoading();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -92,6 +93,7 @@ export default function BottleScene() {
 
         animCleanup = setupBottleAnims(bottle, camera);
         ScrollTrigger.refresh();
+        setModelLoaded();
       },
       undefined,
       (err) => console.error("GLB failed to load:", err)

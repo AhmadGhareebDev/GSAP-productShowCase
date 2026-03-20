@@ -4,7 +4,9 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
 
+import { LoadingProvider, useLoading } from "./contexts/LoadingContext";
 import BottleScene from "./components/BottleScene";
+import LoadingScreen from "./components/LoadingScreen";
 import Hero from "./sections/Hero";
 import IntroduceSection from "./sections/IntroduceSection";
 import Scent1 from "./sections/Scent1";
@@ -19,8 +21,9 @@ import Footer from "./sections/Footer";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-export default function App() {
+function AppContent() {
   const isDesktopOrTablet = useMediaQuery({ minWidth: 768 });
+  const { isLoading } = useLoading();
   
   useGSAP(() => {
     ScrollSmoother.create({
@@ -33,9 +36,11 @@ export default function App() {
 
   return (
     <>
+      {isLoading && <LoadingScreen />}
+      
       {isDesktopOrTablet && <BottleScene />}
 
-      <div id="smooth-wrapper">
+      <div id="smooth-wrapper" style={{ opacity: isLoading ? 0 : 1 }}>
         <div id="smooth-content">
           <Hero />
           <IntroduceSection />
@@ -50,5 +55,13 @@ export default function App() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <LoadingProvider>
+      <AppContent />
+    </LoadingProvider>
   );
 }

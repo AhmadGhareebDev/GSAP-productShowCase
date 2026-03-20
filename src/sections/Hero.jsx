@@ -42,7 +42,7 @@ const Hero = () => {
       ref={heroRef}
       data-section="hero"
       className="relative w-screen h-dvh bg-center bg-cover bg-no-repeat overflow-hidden"
-      style={{ backgroundImage: "url(/images/hero-background-img.jpg)" }}
+      style={{ backgroundImage: "url(/images/hero-background-img.webp)" }}
     >
       <div className="absolute inset-0 bg-black/10" />
 

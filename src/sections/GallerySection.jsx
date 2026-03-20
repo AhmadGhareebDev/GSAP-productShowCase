@@ -4,12 +4,12 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const images = [
-  { id: 1,  src: '/images/Gallery-1.jpg',  alt: '', span: 'wide' },
-  { id: 2,  src: '/images/Gallery-2.jpg',  alt: '', span: 'tall' },
-  { id: 3,  src: '/images/Gallery-3.jpg',  alt: '', span: 'tall' },
-  { id: 4,  src: '/images/Gallery-4.jpg',  alt: '', span: 'tall' },
-  { id: 5,  src: '/images/Gallery-5.jpg',  alt: '', span: 'tall' },
-  { id: 6,  src: '/images/Gallery-6.png',  alt: '', span: 'wide' },
+  { id: 1,  src: '/images/Gallery-1.webp',  alt: '', span: 'wide' },
+  { id: 2,  src: '/images/Gallery-2.webp',  alt: '', span: 'tall' },
+  { id: 3,  src: '/images/Gallery-3.webp',  alt: '', span: 'tall' },
+  { id: 4,  src: '/images/Gallery-4.webp',  alt: '', span: 'tall' },
+  { id: 5,  src: '/images/Gallery-5.webp',  alt: '', span: 'tall' },
+  { id: 6,  src: '/images/hero-background-img.webp',  alt: '', span: 'wide' },
 
 ]
 

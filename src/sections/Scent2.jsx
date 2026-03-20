@@ -44,7 +44,7 @@ const Scent2 = () => {
     <section
       ref={containerRef}
       style={{
-        backgroundImage: "url('images/scent-2.png')",
+        backgroundImage: "url('images/scent-2.webp')",
       }}
       data-section="scent-2" 
       className='scent-2-section relative w-screen h-screen inset-0 bg-cover bg-center bg-no-repeat flex flex-col justify-center items-end px-6 md:px-16 lg:px-32 overflow-hidden'
