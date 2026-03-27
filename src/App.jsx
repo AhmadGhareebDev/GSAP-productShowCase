@@ -15,7 +15,6 @@ import Scent2 from "./sections/Scent2";
 import Scent3 from "./sections/Scent3";
 import Scent4 from "./sections/Scent4";
 import GallerySection from "./sections/GallerySection";
-import BottleInfo from "./sections/BottleInfo";
 import BottleDetails from "./sections/BottleDetails";
 import Pricing from "./sections/Pricing";
 import Footer from "./sections/Footer";

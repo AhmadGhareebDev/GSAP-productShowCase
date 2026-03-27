@@ -7,8 +7,12 @@ body {
 
 body {
   margin: 0;
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+  font-family: "Outfit", "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
     sans-serif;
+  background-color: #000;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media (max-width: 768px) {
@@ -36,6 +40,35 @@ body {
   .scent-4-section {
     align-items: center !important;
   }
+}
+
+/* Texture Overlay */
+.grain-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.2;
+  background-image: url("/images/noise.png");
+  background-repeat: repeat;
+  transform: translateZ(0);
+}
+
+/* Background Gradients */
+.bg-scent-1 {
+  background: radial-gradient(circle at 70% 50%, #2a1b12 0%, #0a0502 100%);
+}
+.bg-scent-2 {
+  background: radial-gradient(circle at 70% 50%, #2a0a0a 0%, #050202 100%);
+}
+.bg-scent-3 {
+  background: radial-gradient(circle at 70% 50%, #0a0a2a 0%, #020205 100%);
+}
+.bg-scent-4 {
+  background: radial-gradient(circle at 70% 50%, #0a2a1b 0%, #020503 100%);
 }
 
 .left-leaf {
@@ -78,34 +111,55 @@ body {
   position: absolute;
   top: 55%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   width: 20vw;
   height: 75vh;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
   z-index: 40;
+  will-change: opacity, transform;
 }
 
 .glassy-overlay-full {
   position: absolute;
   top: 55%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   width: 90vw;
   height: 75vh;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 32px;
+  box-shadow: 
+    0 16px 40px 0 rgba(0, 0, 0, 0.5),
+    inset 0 0 100px 0 rgba(255, 255, 255, 0.02);
   z-index: 20;
+  will-change: opacity, transform;
 }
+
+.glow-orb {
+  position: absolute;
+  width: 40vw;
+  height: 40vw;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.3;
+  z-index: 10;
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+.glow-orb-1 { background: #e8c4a2; top: 20%; left: 60%; }
+.glow-orb-2 { background: #e0635f; top: 10%; left: 20%; opacity: 0.2; }
+.glow-orb-3 { background: #998caa; top: 40%; left: 70%; opacity: 0.2; }
+.glow-orb-4 { background: #6abf8a; top: 30%; left: 10%; opacity: 0.2; }

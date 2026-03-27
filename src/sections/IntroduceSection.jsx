@@ -19,8 +19,8 @@ const IntroduceSection = () => {
           start: 'top top',
           end: '+=700',
           scrub: true,
-          pin: true,
-          pinSpacing: true,
+          pin: isDesktopOrTablet,
+          pinSpacing: isDesktopOrTablet,
         },
       }
     );
