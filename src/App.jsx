@@ -25,14 +25,21 @@ function AppContent() {
   const isDesktopOrTablet = useMediaQuery({ minWidth: 768 });
   const { isLoading, setModelLoaded } = useLoading();
   
-  useGSAP(() => {
-    ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 2,
-      effects: true,
-    });
-  });
+  useGSAP(
+    () => {
+      if (!isDesktopOrTablet) return;
+
+      const smoother = ScrollSmoother.create({
+        wrapper: "#smooth-wrapper",
+        content: "#smooth-content",
+        smooth: 1.35,
+        effects: false,
+      });
+
+      return () => smoother.kill();
+    },
+    { dependencies: [isDesktopOrTablet], revertOnUpdate: true }
+  );
 
   useEffect(() => {
     if (!isDesktopOrTablet) {

@@ -14,7 +14,6 @@ const Scent4 = () => {
       {
         autoAlpha: 1,
         ease: 'none',
-        force3D: true,
         scrollTrigger: {
           trigger: '.scent-4-section',
           start: 'top top',

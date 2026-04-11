@@ -28,7 +28,7 @@ const Hero = () => {
         ease: "none",
         scrollTrigger: {
           trigger: heroRef.current,
-          start: "top 20%",
+          start: "top top",
           end: "bottom top",
           scrub: true,
         },

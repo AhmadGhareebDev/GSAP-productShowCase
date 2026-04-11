@@ -1,4 +1,4 @@
-import { useEffect, useRef, lazy } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import gsap from "gsap";
@@ -21,7 +21,7 @@ export default function BottleScene() {
       antialias: true,
       alpha: true, 
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -36,27 +36,15 @@ export default function BottleScene() {
     );
     camera.position.set(0, 0.2, 6);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.4)); 
+    scene.add(new THREE.AmbientLight(0xffffff, 0.32)); 
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
     keyLight.position.set(3, 6, 4);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xd0f0e0, 0.8); 
-    fillLight.position.set(-4, 2, 2);
-    scene.add(fillLight);
-
-    const rimLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 1.15);
     rimLight.position.set(0, 3, -5);
     scene.add(rimLight);
-
-    const topLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    topLight.position.set(0, 8, 2);
-    scene.add(topLight);
-
-    const rightLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    rightLight.position.set(6, 2, 2);
-    scene.add(rightLight);
 
     let animCleanup = null;
     const loader = new GLTFLoader();
@@ -91,7 +79,7 @@ export default function BottleScene() {
           mat.needsUpdate = true;
         });
 
-        animCleanup = setupBottleAnims(bottle, camera);
+        animCleanup = setupBottleAnims(bottle);
         ScrollTrigger.refresh();
         setModelLoaded();
       },
@@ -101,14 +89,23 @@ export default function BottleScene() {
 
  
 
-    let raf;
+    let isVisible = !document.hidden;
     const tick = () => {
-      raf = requestAnimationFrame(tick);
+      if (!isVisible) return;
       renderer.render(scene, camera);
     };
-    tick();
+    gsap.ticker.add(tick);
+
+    const onVisibilityChange = () => {
+      isVisible = !document.hidden;
+      if (isVisible) {
+        renderer.render(scene, camera);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     const onResize = () => {
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setSize(window.innerWidth, window.innerHeight);
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -116,8 +113,9 @@ export default function BottleScene() {
     window.addEventListener("resize", onResize);
 
     return () => {
-      cancelAnimationFrame(raf);
+      gsap.ticker.remove(tick);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       animCleanup?.();
       renderer.dispose();
     };

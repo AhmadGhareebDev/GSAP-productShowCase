@@ -64,24 +64,28 @@ export default function Footer() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {['Instagram', 'Twitter / X', 'Pinterest', 'TikTok'].map(link => (
-              <a
+              <button
                 key={link}
-                href="#"
+                type="button"
                 style={{
+                  background: 'transparent',
+                  border: 'none',
                   color: '#333',
                   fontSize: '0.75rem',
                   letterSpacing: '0.3em',
                   textTransform: 'uppercase',
-                  textDecoration: 'none',
                   transition: 'color 0.3s',
                   display: 'inline-block',
                   width: 'fit-content',
+                  padding: 0,
+                  textAlign: 'left',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={e => e.currentTarget.style.color = '#6abf8a'}
                 onMouseLeave={e => e.currentTarget.style.color = '#333'}
               >
                 {link}
-              </a>
+              </button>
             ))}
           </div>
         </div>
