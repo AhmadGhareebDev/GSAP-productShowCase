@@ -30,6 +30,6 @@ npm run preview
 ```
 
 ## Placeholders
-- Email: your-email@example.com
-- Twitter: https://twitter.com/your-handle
-- Live Website (Vercel): https://your-vercel-url.vercel.app
+- Email: ahmad.ghareeb0000@gmail.com
+- Twitter: https://x.com/AhmadGhareebDev
+- Live Website (Vercel): https://gsap-product-show-case.vercel.app/
