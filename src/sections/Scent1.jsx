@@ -41,6 +41,24 @@ const Scent1 = () => {
       force3D: true,
     }, 0)
 
+    tl.from('.autumn-left-leaf', {
+      x: -100,
+      autoAlpha: 0,
+      duration: 2,
+      rotate: -45,
+      force3D: true,
+    }, 0)
+
+    tl.from('.autumn-right-leaf', {
+      x: 90,
+      y: 0,
+      autoAlpha: 0,
+      duration: 2,
+      rotate: 35,
+      ease: 'power3.out',
+      force3D: true,
+    }, 0)
+
   }, { scope: containerRef })
 
   return (
@@ -56,10 +74,14 @@ const Scent1 = () => {
         
         {/* Left Side */}
         <div className="flex flex-col text-center md:text-left">
-          <p className="font-extrabold text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[8rem] leading-[0.9] tracking-tighter drop-shadow-2xl text-white">
+          <p className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[8rem] leading-[0.92] drop-shadow-2xl text-white">
             <span className="scent-text-anim inline-block">Autumn</span><br />
             <span className="scent-text-anim inline-block text-transparent bg-clip-text bg-linear-to-br from-orange-200 via-orange-300 to-orange-600">Scent.</span>
           </p>
+          <button type="button" className="ui-pill-btn group relative mt-6 inline-flex overflow-hidden rounded-full border border-orange-300/70 bg-linear-to-r from-orange-500/25 to-orange-800/20 px-6 py-3 text-xs font-bold tracking-[0.18em] uppercase text-orange-100">
+            <span className="absolute inset-0 origin-left scale-x-0 bg-orange-400 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            <span className="relative z-10 transition-colors duration-300 group-hover:text-[#2b1305]">Buy Now</span>
+          </button>
         </div>
 
         {/* Right Side */}
@@ -77,6 +99,8 @@ const Scent1 = () => {
       </div>
 
       <div className='glassy-overlay-full glassy-scent-1'></div>
+      <img src="images/Autumn-Leaf.webp" alt="" loading="lazy" decoding="async" fetchPriority="low" className='autumn-left-leaf left-leaf z-10 opacity-40 brightness-50 contrast-125' />
+      <img src="images/Autumn-Leaf.webp" alt="" loading="lazy" decoding="async" fetchPriority="low" className='autumn-right-leaf right-leaf scale-x-[-1] z-10 opacity-40 brightness-50 contrast-125' />
     </section>
   )
 }

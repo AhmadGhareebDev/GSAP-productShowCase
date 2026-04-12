@@ -1,10 +1,24 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap");
+
+:root {
+  --font-body: "Manrope", "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --radius-soft: 14px;
+  --radius-pill: 999px;
+  --ui-fast: 260ms;
+}
 
 html,
 body {
   height: 100%;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+section[data-section] {
+  isolation: isolate;
+  backface-visibility: hidden;
 }
 
 html::-webkit-scrollbar,
@@ -14,12 +28,52 @@ body::-webkit-scrollbar {
 
 body {
   margin: 0;
-  font-family: "Outfit", "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
-    sans-serif;
+  font-family: var(--font-body);
   background-color: #000;
   color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.section-kicker {
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  font-size: clamp(0.62rem, 0.72vw, 0.78rem);
+  font-weight: 700;
+}
+
+.ui-pill-btn {
+  border-radius: var(--radius-pill);
+  transition: transform var(--ui-fast) ease, box-shadow var(--ui-fast) ease, color var(--ui-fast) ease, background-color var(--ui-fast) ease;
+}
+
+.ui-pill-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+}
+
+.ui-panel {
+  border-radius: var(--radius-soft);
+}
+
+.section-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0) 65%);
+  opacity: 0;
+  transform: translateX(-110%);
 }
 
 @media (max-width: 768px) {
@@ -59,9 +113,10 @@ body {
   pointer-events: none;
   z-index: 5;
   opacity: 0.2;
-  background-image: url("/images/noise.png");
+  background-image: url("/images/noise.webp");
   background-repeat: repeat;
   transform: translateZ(0);
+  contain: paint;
 }
 
 /* Background Gradients */
@@ -131,6 +186,7 @@ body {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
   z-index: 40;
   will-change: opacity, transform;
+  contain: paint;
 }
 
 .glassy-overlay-full {
@@ -152,6 +208,7 @@ body {
     inset 0 0 100px 0 rgba(255, 255, 255, 0.02);
   z-index: 20;
   will-change: opacity, transform;
+  contain: paint;
 }
 
 .glow-orb {

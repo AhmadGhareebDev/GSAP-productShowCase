@@ -10,19 +10,36 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function BottleScene() {
   const canvasRef = useRef(null);
-  const bottleRef = useRef(null);
-  const { setModelLoaded } = useLoading();
+  const animControlsRef = useRef(null);
+  const hasTriggeredIntroRef = useRef(false);
+  const { isLoading, setModelLoaded } = useLoading();
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (hasTriggeredIntroRef.current) return;
+
+    animControlsRef.current?.playIntroPop?.();
+    hasTriggeredIntroRef.current = true;
+  }, [isLoading]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+
+    const getPixelRatio = () => {
+      const dpr = window.devicePixelRatio || 1;
+      if (window.innerWidth < 768) return Math.min(dpr, 1);
+      if (window.innerWidth < 1280) return Math.min(dpr, 1.15);
+      return Math.min(dpr, 1.2);
+    };
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
       alpha: true, 
+      powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(getPixelRatio());
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2; 
@@ -46,14 +63,12 @@ export default function BottleScene() {
     rimLight.position.set(0, 3, -5);
     scene.add(rimLight);
 
-    let animCleanup = null;
     const loader = new GLTFLoader();
 
     loader.load(
       "/models/bottle.glb",
       (gltf) => {
         const bottle = gltf.scene;
-        bottleRef.current = bottle;
         scene.add(bottle);
 
      
@@ -79,7 +94,7 @@ export default function BottleScene() {
           mat.needsUpdate = true;
         });
 
-        animCleanup = setupBottleAnims(bottle);
+        animControlsRef.current = setupBottleAnims(bottle, { deferIntro: true });
         ScrollTrigger.refresh();
         setModelLoaded();
       },
@@ -90,8 +105,15 @@ export default function BottleScene() {
  
 
     let isVisible = !document.hidden;
-    const tick = () => {
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+    let frameBudget = 0;
+
+    const tick = (_time, deltaTime) => {
       if (!isVisible) return;
+      frameBudget += deltaTime;
+      if (frameBudget < frameInterval) return;
+      frameBudget = 0;
       renderer.render(scene, camera);
     };
     gsap.ticker.add(tick);
@@ -105,8 +127,8 @@ export default function BottleScene() {
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     const onResize = () => {
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(getPixelRatio());
+      renderer.setSize(window.innerWidth, window.innerHeight, false);
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
     };
@@ -116,10 +138,11 @@ export default function BottleScene() {
       gsap.ticker.remove(tick);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibilityChange);
-      animCleanup?.();
+      animControlsRef.current?.cleanup?.();
+      animControlsRef.current = null;
       renderer.dispose();
     };
-  }, []);
+  }, [setModelLoaded]);
 
   return (
     <>

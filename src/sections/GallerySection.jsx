@@ -17,8 +17,6 @@ export default function GallerySection() {
   const sectionRef = useRef(null)
 
   useGSAP(() => {
-    const items = sectionRef.current.querySelectorAll('.gallery-item')
-
     const tl = gsap.timeline({
         scrollTrigger: {
             trigger: sectionRef.current,
@@ -35,7 +33,7 @@ export default function GallerySection() {
         ease: 'power3.out',
     })
 
-  })
+  }, { scope: sectionRef })
 
   return (
     <section
@@ -50,22 +48,16 @@ export default function GallerySection() {
     >
       {/* Header */}
       <div style={{ marginBottom: '64px', textAlign: 'center' }}>
-        <p style={{
-          fontFamily: 'serif',
-          fontSize: 'clamp(0.65rem, 1.2vw, 0.8rem)',
-          letterSpacing: '0.4em',
-          textTransform: 'uppercase',
+        <p className="section-kicker" style={{
           color: '#555',
           marginBottom: '16px',
         }}>
           The Collection
         </p>
-        <h2 style={{
-          fontFamily: 'Georgia, serif',
+        <h2 className="font-display" style={{
           fontSize: 'clamp(2.5rem, 6vw, 5rem)',
           fontWeight: 400,
           color: '#e8e0d4',
-          letterSpacing: '-0.02em',
           lineHeight: 1,
           margin: 0,
         }}>
@@ -95,7 +87,7 @@ export default function GallerySection() {
                 gridColumn: `span ${colSpan}`,
                 gridRow: `span ${rowSpan}`,
                 overflow: 'hidden',
-                borderRadius: '4px',
+                borderRadius: '14px',
                 position: 'relative',
                 cursor: 'pointer',
               }}

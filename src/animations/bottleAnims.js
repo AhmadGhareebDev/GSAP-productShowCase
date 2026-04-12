@@ -15,10 +15,16 @@ function getBodyMaterial(bottle) {
   return mat;
 }
 
-export function setupBottleAnims(bottle) {
+export function setupBottleAnims(bottle, options = {}) {
+  const { deferIntro = false } = options;
   const LABEL   = "bottle-anim";
+  const DETAILS_SCALE_FACTOR = 0.92;
   const bodyMat = getBodyMaterial(bottle);
   const localTweens = [];
+  let isIntroAnimating = false;
+  let hasPlayedIntro = false;
+
+  const getTargetScale = () => 1.0 * getR();
 
   ScrollTrigger.getAll()
     .filter((st) => st.vars.id?.startsWith(LABEL))
@@ -27,8 +33,42 @@ export function setupBottleAnims(bottle) {
   const applyBaseState = () => {
     bottle.position.set(0, 0, 0);
     bottle.rotation.set(0, 0, -0.2);
-    bottle.scale.setScalar(1.0 * getR());
+    bottle.scale.setScalar(getTargetScale());
     if (bodyMat) bodyMat.color.setHex(0x6abf8a);
+  };
+
+  const playIntroPop = () => {
+    if (hasPlayedIntro) return;
+    hasPlayedIntro = true;
+    isIntroAnimating = true;
+    const target = getTargetScale();
+    const start = target * 0.4;
+    const overshoot = target * 1.2;
+
+    gsap.killTweensOf(bottle.scale);
+    bottle.scale.set(start, start, start);
+
+    gsap.to(bottle.scale, {
+      x: overshoot,
+      y: overshoot,
+      z: overshoot,
+      duration: 0.48,
+      ease: "power2.out",
+      overwrite: "auto",
+      onComplete: () => {
+        gsap.to(bottle.scale, {
+          x: target,
+          y: target,
+          z: target,
+          duration: 0.42,
+          ease: "sine.out",
+          overwrite: "auto",
+          onComplete: () => {
+            isIntroAnimating = false;
+          },
+        });
+      },
+    });
   };
 
   const killTransitionTweens = () => {
@@ -38,29 +78,50 @@ export function setupBottleAnims(bottle) {
   const transitionDrop = () => {
     killTransitionTweens();
     gsap.to(bottle.position, {
-      keyframes: [
-        { y: -2.1, duration: 0.42, ease: "power1.in" },
-        { y: -5, duration: 0.62, ease: "power3.in" },
-      ],
+      x: 0,
+      y: -5.8,
+      duration: 1.08,
+      ease: "power4.in",
       overwrite: "auto",
     });
   };
 
   const transitionRise = () => {
     killTransitionTweens();
+    gsap.set(bottle.rotation, {
+      x: 0,
+      y: 0,
+      z: -0.2,
+    });
     gsap.to(bottle.position, {
       keyframes: [
-        { y: 0.22, duration: 0.62, ease: "power3.out" },
-        { y: 0, duration: 0.32, ease: "sine.out" },
+        { x: 0.04, y: 0.24, duration: 0.52, ease: "power3.out" },
+        { x: 0, y: 0, duration: 0.34, ease: "sine.out" },
       ],
       overwrite: "auto",
     });
   };
 
+  const scaleToFactor = (factor, duration = 0.8, ease = "power2.out") => {
+    const target = getTargetScale() * factor;
+    gsap.to(bottle.scale, {
+      x: target,
+      y: target,
+      z: target,
+      duration,
+      ease,
+      overwrite: "auto",
+    });
+  };
+
   applyBaseState();
+  if (!deferIntro) {
+    playIntroPop();
+  }
 
   const onRefreshInit = () => {
-    bottle.scale.setScalar(1.0 * getR());
+    if (isIntroAnimating) return;
+    bottle.scale.setScalar(getTargetScale());
   };
   ScrollTrigger.addEventListener("refreshInit", onRefreshInit);
 
@@ -114,20 +175,20 @@ export function setupBottleAnims(bottle) {
   }
 
   gsap.to(bottle.rotation, {
-      keyframes: [
-        { x: 0, z: 0, y: Math.PI * 12, ease: "power1.inOut" }
-      ],
-      ease: "none",
-      overwrite: "auto",
-      immediateRender: false,
-      scrollTrigger: {
-        id: `${LABEL}-3-rot`,
-        trigger: '[data-section="scent-2"]',
-        start: "top bottom",
-        end: "top top",
-        scrub: 0.8,
-      },
-    });
+    x: Math.PI * 2,
+    y: Math.PI * 12,
+    z: 0,
+    ease: "none",
+    overwrite: "auto",
+    immediateRender: false,
+    scrollTrigger: {
+      id: `${LABEL}-3-rot`,
+      trigger: '[data-section="scent-2"]',
+      start: "top bottom",
+      end: "top top",
+      scrub: 0.8,
+    },
+  });
 
   if (bodyMat) {
     gsap.to(bodyMat.color, {
@@ -148,21 +209,20 @@ export function setupBottleAnims(bottle) {
   }
 
   gsap.to(bottle.rotation, {
-      keyframes: [
-        { x: -0.4, z: 0.15, y: Math.PI * 14, ease: "power1.inOut" },
-        { x: 0,    z: 0,    y: Math.PI * 16, ease: "power1.inOut" }
-      ],
-      ease: "none",
-      overwrite: "auto",
-      immediateRender: false,
-      scrollTrigger: {
-        id: `${LABEL}-4-rot`,
-        trigger: '[data-section="scent-3"]',
-        start: "top bottom",
-        end: "top top",
-        scrub: 0.8,
-      },
-    });
+    x: Math.PI * 4,
+    y: Math.PI * 16,
+    z: 0,
+    ease: "none",
+    overwrite: "auto",
+    immediateRender: false,
+    scrollTrigger: {
+      id: `${LABEL}-4-rot`,
+      trigger: '[data-section="scent-3"]',
+      start: "top bottom",
+      end: "top top",
+      scrub: 0.8,
+    },
+  });
 
   if (bodyMat) {
     gsap.to(bodyMat.color, {
@@ -183,21 +243,20 @@ export function setupBottleAnims(bottle) {
   }
 
   gsap.to(bottle.rotation, {
-      keyframes: [
-        { x: 0.3, z: 0.3, y: Math.PI * 18, ease: "power1.inOut" },
-        { x: 0,   z: 0,   y: Math.PI * 20, ease: "power1.inOut" }
-      ],
-      ease: "none",
-      overwrite: "auto",
-      immediateRender: false,
-      scrollTrigger: {
-        id: `${LABEL}-5-rot`,
-        trigger: '[data-section="scent-4"]',
-        start: "top bottom",
-        end: "top top",
-        scrub: 0.8,
-      },
-    });
+    x: Math.PI * 4,
+    y: Math.PI * 20,
+    z: 0,
+    ease: "none",
+    overwrite: "auto",
+    immediateRender: false,
+    scrollTrigger: {
+      id: `${LABEL}-5-rot`,
+      trigger: '[data-section="scent-4"]',
+      start: "top bottom",
+      end: "top top",
+      scrub: 0.8,
+    },
+  });
 
   if (bodyMat) {
     gsap.to(bodyMat.color, {
@@ -232,9 +291,21 @@ export function setupBottleAnims(bottle) {
       trigger: '[data-section="bottle-details"]',
       start: "top center",
       end: "bottom center",
-      onEnter: transitionRise,
-      onLeave: transitionDrop,
-      onEnterBack: transitionRise,
+      onEnter: () => {
+        transitionRise();
+        scaleToFactor(DETAILS_SCALE_FACTOR, 0.9, "power3.out");
+      },
+      onLeave: () => {
+        transitionDrop();
+        scaleToFactor(1, 0.5, "sine.out");
+      },
+      onEnterBack: () => {
+        transitionRise();
+        scaleToFactor(DETAILS_SCALE_FACTOR, 0.9, "power3.out");
+      },
+      onLeaveBack: () => {
+        scaleToFactor(1, 0.5, "sine.out");
+      },
     });
 
     // Footer — tilt, spin, color cycle
@@ -249,6 +320,9 @@ export function setupBottleAnims(bottle) {
     ];
 
   function startFooterAnim() {
+      footerRotation?.kill();
+      footerColors?.kill();
+
       gsap.to(bottle.position, { y: 0,     duration: 1, ease: "power3.out" });
       gsap.to(bottle.rotation, { z: -0.18, duration: 1, ease: "power3.out" });
 
@@ -280,7 +354,9 @@ export function setupBottleAnims(bottle) {
     footerRotation = null;
     footerColors   = null;
     transitionDrop();
-    if (bodyMat) bodyMat.color.setHex(0x6abf8a);
+    if (bodyMat) {
+      bodyMat.color.setHex(0x6abf8a);
+    }
   }
 
   const stFooter = ScrollTrigger.create({
@@ -302,7 +378,7 @@ export function setupBottleAnims(bottle) {
 
   ScrollTrigger.refresh();
 
-  return () => {
+  const cleanup = () => {
     ScrollTrigger.removeEventListener("refreshInit", onRefreshInit);
     localTweens.forEach((item) => item?.kill?.());
     footerRotation?.kill();
@@ -310,5 +386,10 @@ export function setupBottleAnims(bottle) {
     ScrollTrigger.getAll()
       .filter((st) => st.vars.id?.startsWith(LABEL))
       .forEach((st) => st.kill());
+  };
+
+  return {
+    cleanup,
+    playIntroPop,
   };
 }

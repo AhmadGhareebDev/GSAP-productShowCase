@@ -20,6 +20,7 @@ export default function Footer() {
         scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' }
       }
     )
+
   }, { scope: sectionRef })
 
   return (
@@ -38,8 +39,15 @@ export default function Footer() {
         overflow: 'hidden',
       }}
     >
+      <div className="pointer-events-none absolute -left-16 top-1/3 h-56 w-56 rounded-full bg-lime-400/6 blur-3xl" />
+      <div className="pointer-events-none absolute right-12 top-16 h-48 w-48 rounded-full bg-lime-300/5 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/3 bottom-20 h-44 w-44 rounded-full bg-lime-400/5 blur-3xl" />
+      <div className="pointer-events-none absolute right-1/4 bottom-28 h-52 w-52 rounded-full bg-lime-400/4 blur-3xl" />
+
       {/* Main content */}
       <div className="footer-main" style={{
+        position: 'relative',
+        zIndex: 1,
         width: '100%',
         maxWidth: '1200px',
         margin: '0 auto',
@@ -50,8 +58,7 @@ export default function Footer() {
       }}>
         {/* Left — brand + links */}
         <div className="footer-left" style={{ flex: 1 }}>
-          <p style={{
-            fontFamily: 'Georgia, serif',
+          <p className="font-display" style={{
             fontSize: 'clamp(1.8rem, 3vw, 2.8rem)',
             color: '#e8e0d4',
             fontWeight: 400,
@@ -70,7 +77,7 @@ export default function Footer() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#333',
+                  color: '#6f6f6f',
                   fontSize: '0.75rem',
                   letterSpacing: '0.3em',
                   textTransform: 'uppercase',
@@ -150,6 +157,7 @@ export default function Footer() {
               onBlur={e => e.currentTarget.style.borderBottomColor = '#1e1e1e'}
             />
             <button
+              className="ui-pill-btn"
               style={{
                 alignSelf: 'flex-start',
                 background: 'transparent',
@@ -160,7 +168,7 @@ export default function Footer() {
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase',
                 cursor: 'pointer',
-                borderRadius: '2px',
+                borderRadius: '999px',
                 transition: 'all 0.3s',
                 marginTop: '8px',
               }}
@@ -181,6 +189,8 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="footer-bottom" style={{
+        position: 'relative',
+        zIndex: 1,
         width: '100%',
         maxWidth: '1200px',
         margin: '0 auto',

@@ -56,22 +56,17 @@ export default function Pricing() {
     >
       {/* Header */}
       <div className="pricing-header" style={{ textAlign: 'center', marginBottom: '72px' }}>
-        <p style={{
+        <p className="section-kicker" style={{
           color: '#6abf8a',
-          letterSpacing: '0.4em',
-          fontSize: '0.7rem',
-          textTransform: 'uppercase',
           marginBottom: '16px',
         }}>
           Simple Pricing
         </p>
 
-        <h2 style={{
-          fontFamily: 'Georgia, serif',
+        <h2 className="font-display" style={{
           fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
           fontWeight: 400,
           color: '#e8e0d4',
-          letterSpacing: '-0.02em',
           margin: 0,
           lineHeight: 1.1,
         }}>
@@ -165,13 +160,14 @@ export default function Pricing() {
             </div>
 
             <button
+              className="ui-pill-btn"
               style={{
                 width: '100%',
                 padding: '14px',
                 background: tier.featured ? '#6abf8a' : 'transparent',
                 color: tier.featured ? '#080808' : '#6abf8a',
                 border: `1px solid #6abf8a`,
-                borderRadius: '4px',
+                borderRadius: '999px',
                 fontSize: '0.75rem',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',

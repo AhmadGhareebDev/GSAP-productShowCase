@@ -60,21 +60,16 @@ export default function BottleDetails() {
     >
       {/* Top label */}
       <div className="bd-label" style={{ textAlign: 'center', marginBottom: '80px' }}>
-        <p style={{
+        <p className="section-kicker" style={{
           color: '#6abf8a',
-          letterSpacing: '0.4em',
-          fontSize: '0.7rem',
-          textTransform: 'uppercase',
           marginBottom: '12px',
         }}>
           Built Different
         </p>
-        <h2 style={{
-          fontFamily: 'Georgia, serif',
+        <h2 className="font-display" style={{
           fontSize: 'clamp(2rem, 5vw, 4rem)',
           fontWeight: 400,
           color: '#e8e0d4',
-          letterSpacing: '-0.02em',
           margin: 0,
           lineHeight: 1.1,
         }}>
@@ -105,9 +100,8 @@ export default function BottleDetails() {
               }}>
                 {spec.label}
               </p>
-              <p style={{
+              <p className="font-display" style={{
                 color: '#e8e0d4',
-                fontFamily: 'Georgia, serif',
                 fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
                 fontWeight: 400,
                 margin: 0,
@@ -135,9 +129,8 @@ export default function BottleDetails() {
               }}>
                 {spec.label}
               </p>
-              <p style={{
+              <p className="font-display" style={{
                 color: '#e8e0d4',
-                fontFamily: 'Georgia, serif',
                 fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
                 fontWeight: 400,
                 margin: 0,
