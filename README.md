@@ -29,7 +29,7 @@ npm run build
 npm run preview
 ```
 
-## Placeholders
+## Contacts
 - Email: ahmad.ghareeb0000@gmail.com
 - Twitter: https://x.com/AhmadGhareebDev
 - Live Website (Vercel): https://gsap-product-show-case.vercel.app/
